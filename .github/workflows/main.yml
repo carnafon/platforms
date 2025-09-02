@@ -1,0 +1,1 @@
+godot --headless --verbose --export-release "Web" build/web/index.html
