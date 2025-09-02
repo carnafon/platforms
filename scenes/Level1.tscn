@@ -1,0 +1,160 @@
+
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id=1]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/sky.png" id=2]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/mountains.png" id=3]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/hills.png" id=4]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/sea.png" id=5]
+[ext_resource type="Texture2D" path="res://assets/sprites/caserio.png" id=6]
+[ext_resource type="Texture2D" path="res://assets/sprites/coin.png" id=7]
+[ext_resource type="Shader" path="res://assets/shaders/rain.shader" id=8]
+[ext_resource type="Shader" path="res://assets/shaders/fog.shader" id=9]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/noise.png" id=10]
+[ext_resource type="Script" path="res://scripts/Coin.gd" id=11]
+
+[sub_resource type="RectangleShape2D" id=1]
+size = Vector2(1200, 40)
+
+[sub_resource type="RectangleShape2D" id=2]
+size = Vector2(220, 20)
+
+[node name="Level1" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="Sky" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.1, 0)
+
+[node name="SkySprite" type="Sprite2D" parent="ParallaxBackground/Sky"]
+texture = ExtResource("2")
+position = Vector2(960, 540)
+
+[node name="Mountains" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.25, 0)
+
+[node name="MountainsSprite" type="Sprite2D" parent="ParallaxBackground/Mountains"]
+texture = ExtResource("3")
+position = Vector2(960, 400)
+
+[node name="Hills" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.45, 0)
+
+[node name="HillsSprite" type="Sprite2D" parent="ParallaxBackground/Hills"]
+texture = ExtResource("4")
+position = Vector2(960, 720)
+
+[node name="Sea" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.6, 0)
+
+[node name="SeaSprite" type="Sprite2D" parent="ParallaxBackground/Sea"]
+texture = ExtResource("5")
+position = Vector2(960, 920)
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="Ground" type="StaticBody2D" parent="World"]
+position = Vector2(600, 700)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Ground"]
+shape = SubResource("1")
+
+[node name="Platform1" type="StaticBody2D" parent="World"]
+position = Vector2(400, 560)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Platform1"]
+shape = SubResource("2")
+
+[node name="Platform2" type="StaticBody2D" parent="World"]
+position = Vector2(800, 460)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Platform2"]
+shape = SubResource("2")
+
+[node name="Platform3" type="StaticBody2D" parent="World"]
+position = Vector2(1200, 520)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Platform3"]
+shape = SubResource("2")
+
+[node name="Farmhouse" type="Sprite2D" parent="World"]
+texture = ExtResource("6")
+position = Vector2(200, 628)
+scale = Vector2(1.2,1.2)
+
+[node name="Player" parent="." instance=ExtResource("1")]
+position = Vector2(120, 620)
+
+[node name="Coins" type="Node2D" parent="."]
+
+[node name="Coin1" type="Area2D" parent="Coins"]
+position = Vector2(400, 520)
+script = ExtResource("11")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Coins/Coin1"]
+shape = SubResource("2")
+
+[node name="Sprite2D" type="Sprite2D" parent="Coins/Coin1"]
+texture = ExtResource("7")
+
+[node name="Coin2" type="Area2D" parent="Coins"]
+position = Vector2(800, 420)
+script = ExtResource("11")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Coins/Coin2"]
+shape = SubResource("2")
+
+[node name="Sprite2D" type="Sprite2D" parent="Coins/Coin2"]
+texture = ExtResource("7")
+
+[node name="Coin3" type="Area2D" parent="Coins"]
+position = Vector2(1200, 480)
+script = ExtResource("11")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Coins/Coin3"]
+shape = SubResource("2")
+
+[node name="Sprite2D" type="Sprite2D" parent="Coins/Coin3"]
+texture = ExtResource("7")
+
+[node name="Weather" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Fog" type="ColorRect" parent="Weather"]
+anchors_preset = 15
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+material = SubResource("3")
+
+[node name="Rain" type="ColorRect" parent="Weather"]
+anchors_preset = 15
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 0.0
+offset_bottom = 0.0
+material = SubResource("4")
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = ExtResource("9")
+shader_parameter/noise_tex = ExtResource("10")
+shader_parameter/intensity = 0.35
+shader_parameter/speed = 0.5
+shader_parameter/direction = Vector2(0.1, 0.0)
+shader_parameter/fog_color = Color(0.85,0.9,0.95,1.0)
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = ExtResource("8")
+shader_parameter/density = 0.6
+shader_parameter/speed = 2.0
+shader_parameter/angle = -0.7
+shader_parameter/color = Color(0.8,0.9,1,0.22)
